@@ -19,7 +19,7 @@ class Transaccion:
     def __init__(self, estado, tipo, cuentaNumero, cupoDiarioRes, monto, fecha, numero, saldoCuenta, totalTarjetas, totalCheq) -> None:
         self.estado = estado
         self.tipo = tipo
-        self.cuenta_numero = cuentaNumero
+        self.cuentaNumero = cuentaNumero
         self.cupoDiarioRes = cupoDiarioRes
         self.monto = monto
         self.fecha = fecha
@@ -59,7 +59,6 @@ class SISTEMA_TPS:
                 data_transacciones["totalChequerasActualmente"],
             )
 
-            ##VALIDAR DICHAS TRANSACCIONES POR TIPO DE CLIENTE
 
             if cliente.tipo == 'BLACK':
                 consistir_transaccion_BLACK(cliente, transaccion)
@@ -72,8 +71,7 @@ class SISTEMA_TPS:
         return cliente
 
 class ReporteHTML:
-    def generar(self, cliente):
-        # Estructura HTML básica usando formato de cadenas de Python
+    def generar(self, cliente) -> str:
         html = f"""
         <html>
         <head><title>Reporte de Transacciones</title></head>
@@ -87,7 +85,6 @@ class ReporteHTML:
                 </tr>
         """
         
-        # Agregar cada transacción del cliente al HTML
         for trans in cliente.transacciones:
             razon_rechazo = trans.rechazo if trans.es_rechazada() else ""
             html += f"""
@@ -100,7 +97,6 @@ class ReporteHTML:
                 </tr>
             """
         
-        # Cerrar las etiquetas HTML
         html += """
             </table>
         </body>
@@ -109,13 +105,11 @@ class ReporteHTML:
         
         return html
 
-# Crear instancias y generar reporte
 procesador = SISTEMA_TPS()
 cliente = procesador.leer_data()
 
 reporte = ReporteHTML()
 html_historial = reporte.generar(cliente)
 
-# Guardar el HTML en un archivo
 with open('reporte.html', 'w') as file:
     file.write(html_historial)
